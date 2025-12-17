@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolão Mega da Virada 2026</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h1>🎲 Bolão Mega da Virada 2026</h1>
+      <p class="subtitle">Sistema de gerenciamento de bolão</p>
+
+      <div class="auth-toggle">
+        <button id="loginTab" class="auth-tab active">Entrar</button>
+        <button id="registerTab" class="auth-tab">Cadastrar</button>
+      </div>
+
+      <form id="loginForm" class="login-form">
+        <h2 id="formTitle">Login</h2>
+
+        <div class="form-group">
+          <label for="nameInput">Nome:</label>
+          <input
+            type="text"
+            id="nameInput"
+            placeholder="Seu nome completo"
+            required
+            autocomplete="name"
+            autofocus
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="pixKeyInput">Chave PIX:</label>
+          <input
+            type="text"
+            id="pixKeyInput"
+            placeholder="Sua chave PIX (CPF, email, telefone, etc.)"
+            required
+            autocomplete="off"
+          >
+          <small class="form-hint">Será usada para identificação em caso de ganho</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          <span id="submitButtonText">Entrar</span>
+        </button>
+      </form>
+
+      <div class="info-box">
+        <h3>ℹ️ Informações</h3>
+        <p><strong>Valor da cota:</strong> R$ 10,00</p>
+        <p><strong>Transparência total:</strong> Todos os números são escolhidos de forma auditável com hash criptográfico</p>
+      </div>
+
+      <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+      </div>
+
+      <div id="errorMessage" class="error-message" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

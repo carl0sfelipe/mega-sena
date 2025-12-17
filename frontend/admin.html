@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - Bolão Mega da Virada</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="admin-panel">
+    <header class="dashboard-header">
+      <div>
+        <h1>⚙️ Painel Administrativo</h1>
+        <p class="bolao-subtitle">Bolão Mega da Virada 2026</p>
+      </div>
+      <div class="user-info">
+        <span id="userName" class="user-name"></span>
+        <a href="/dashboard.html" class="btn btn-primary btn-sm">
+          🎲 Meu Dashboard
+        </a>
+        <button id="logoutBtn" class="btn btn-secondary btn-sm">Sair</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <!-- Financial Summary -->
+      <section class="card totals-section">
+        <h2>💰 Resumo Financeiro</h2>
+        <div class="totals-grid">
+          <div class="total-item">
+            <span class="total-label">Total Arrecadado:</span>
+            <span class="total-value" id="totalFunds">R$ 0,00</span>
+          </div>
+          <div class="total-item">
+            <span class="total-label">Participantes Confirmados:</span>
+            <span class="total-value" id="confirmedCount">0</span>
+          </div>
+          <div class="total-item">
+            <span class="total-label">Nível de Aposta:</span>
+            <span class="total-value" id="betLevel">-</span>
+          </div>
+          <div class="total-item">
+            <span class="total-label">Apostas Surplus:</span>
+            <span class="total-value" id="surplusBets">0</span>
+          </div>
+        </div>
+
+        <div id="breakdown" class="breakdown">
+          <!-- Breakdown details will be populated here -->
+        </div>
+      </section>
+
+      <!-- Participants Table -->
+      <section class="card participants-section">
+        <div class="section-header">
+          <h2>👥 Participantes</h2>
+          <button id="refreshBtn" class="btn btn-secondary btn-sm">🔄 Atualizar</button>
+        </div>
+
+        <div class="table-container">
+          <table id="participantsTable" class="participants-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Status Pagamento</th>
+                <th>Números Selecionados</th>
+                <th>Data Entrada</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="participantsBody">
+              <tr>
+                <td colspan="5" class="empty-message">Carregando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Closure Section -->
+      <section class="card closure-section">
+        <h2>🔒 Encerramento do Bolão</h2>
+        <p class="warning-text">
+          ⚠️ Atenção: Ao encerrar o bolão, nenhuma alteração será mais possível.
+          Os números finais serão selecionados automaticamente e um hash criptográfico será gerado.
+        </p>
+
+        <button id="closeBolaoBtn" class="btn btn-danger">
+          Encerrar Bolão
+        </button>
+
+        <div id="closureResult" class="closure-result" style="display: none;">
+          <h3>✅ Bolão Encerrado com Sucesso!</h3>
+
+          <div class="hash-display">
+            <label>Hash SHA-256:</label>
+            <code id="closureHash" class="hash-code"></code>
+          </div>
+
+          <div class="final-bets">
+            <h4>Apostas Finais:</h4>
+            <div id="finalBetsList"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+      <div class="spinner"></div>
+      <p>Carregando...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast" style="display: none;"></div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
