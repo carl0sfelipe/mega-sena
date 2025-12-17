@@ -2,7 +2,7 @@
  * API Client - Wrapper for all backend API calls
  */
 
-const API_BASE_URL = window.location.origin;
+const API_BASE_URL = window.APP_CONFIG?.API_URL || window.location.origin;
 
 class APIClient {
   constructor() {
@@ -32,8 +32,16 @@ class APIClient {
     }
 
     try {
-      const response = await fetch(url, config);
-      const data = await response.json();
+const response = await fetch(url, config);
+const text = await response.text();
+
+let data;
+try {
+  data = JSON.parse(text);
+} catch (e) {
+  console.error('Resposta não JSON:', text);
+  throw new Error('Resposta inválida do servidor');
+}
 
       if (!response.ok) {
         throw new Error(data.error || `HTTP error ${response.status}`);
