@@ -76,20 +76,17 @@ class APIClient {
 
   // ===== AUTH =====
 
-  register(name, pixKey) {
-    return this.post('/api/auth/register', {
-      name,
-      pix_key: pixKey
-    });
-  }
 
-  login(name, pixKey) {
-    return this.post('/api/auth/login', {
-      name,
-      pix_key: pixKey
-    });
-  }
+async login(name, pixKey) {
+  return this.post('/api/auth/login', { name, pixKey });
+}
 
+async register(name, pixKey) {
+  return this.post('/api/auth/register', { name, pixKey });
+}
+
+
+  
   logout() {
     return this.post('/api/auth/logout');
   }
