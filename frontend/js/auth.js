@@ -1,8 +1,10 @@
 /**
  * Authentication handling for login page
+ * Estratégia robusta:
+ * - Sempre tenta LOGIN primeiro
+ * - Se falhar, tenta CADASTRO
+ * - Evita bug de estado (register vs login)
  */
-
-let isRegisterMode = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
@@ -15,9 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const formTitle = document.getElementById('formTitle');
   const submitButtonText = document.getElementById('submitButtonText');
 
-  // Tab switching
+  // Estado apenas VISUAL (não decide API)
+  let visualMode = 'login';
+
+  // ===== UI TABS =====
+
   loginTab.addEventListener('click', () => {
-    isRegisterMode = false;
+    visualMode = 'login';
     loginTab.classList.add('active');
     registerTab.classList.remove('active');
     formTitle.textContent = 'Login';
@@ -25,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   registerTab.addEventListener('click', () => {
-    isRegisterMode = true;
+    visualMode = 'register';
     registerTab.classList.add('active');
     loginTab.classList.remove('active');
     formTitle.textContent = 'Cadastro';
@@ -33,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loginForm.addEventListener('submit', handleSubmit);
+
+  // ===== SUBMIT =====
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -60,14 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
       hideError();
 
       let response;
-      if (isRegisterMode) {
-        response = await api.register(name, pixKey);
-      } else {
+
+      try {
+        // 🔑 SEMPRE tenta login primeiro
         response = await api.login(name, pixKey);
+        console.log('Login realizado com sucesso');
+      } catch (loginError) {
+        // Se login falhar, tenta cadastro
+        console.warn('Login falhou, tentando cadastro...', loginError.message);
+        response = await api.register(name, pixKey);
+        console.log('Cadastro realizado com sucesso');
       }
 
-      if (response.success && response.user) {
-        console.log(`${isRegisterMode ? 'Registration' : 'Login'} successful:`, response.user);
+      if (response && response.success && response.user) {
+        console.log('Auth success:', response.user);
 
         // Redirect based on user role
         if (response.user.isAdmin) {
@@ -75,14 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           window.location.href = '/dashboard.html';
         }
+      } else {
+        showError('Erro inesperado. Tente novamente.');
       }
     } catch (error) {
-      console.error(`${isRegisterMode ? 'Registration' : 'Login'} failed:`, error);
-      showError(error.message || `Erro ao ${isRegisterMode ? 'cadastrar' : 'fazer login'}. Tente novamente.`);
+      console.error('Auth failed:', error);
+      showError(error.message || 'Erro ao autenticar. Tente novamente.');
     } finally {
       showLoading(false);
     }
   }
+
+  // ===== HELPERS =====
 
   function showLoading(show) {
     loadingOverlay.style.display = show ? 'flex' : 'none';
