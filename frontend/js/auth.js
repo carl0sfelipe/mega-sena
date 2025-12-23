@@ -7,6 +7,14 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Carregar valor da cota do config
+  if (window.APP_CONFIG?.QUOTA_VALUE) {
+    const quotaDisplay = document.getElementById('quotaValueDisplay');
+    if (quotaDisplay) {
+      quotaDisplay.textContent = `R$ ${window.APP_CONFIG.QUOTA_VALUE.toFixed(2).replace('.', ',')}`;
+    }
+  }
+
   const loginForm = document.getElementById('loginForm');
   const nameInput = document.getElementById('nameInput');
   const pixKeyInput = document.getElementById('pixKeyInput');

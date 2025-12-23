@@ -22,15 +22,36 @@
   <!-- ===== PAGAMENTO ===== -->
   <section id="paymentSection" class="card">
 
-    <h2>💰 Pagamento via PIX</h2>
+    <h2>💰 Como Participar do Bolão</h2>
 
-    <p>
-      <strong>Valor da cota:</strong>
-      <span id="quotaUnitValue">R$ 10,00</span>
-    </p>
+    <div class="tutorial-box">
+      <h3>📋 Passo a passo:</h3>
+      <ol class="tutorial-steps">
+        <li>
+          <strong>Valor da cota:</strong> <span id="quotaUnitValue">Carregando...</span>
+        </li>
+        <li>
+          <strong>Escolha a quantidade de cotas</strong> (máximo 10)
+        </li>
+        <li>
+          <strong>Faça o pagamento via PIX</strong> com os dados abaixo
+        </li>
+        <li>
+          <strong>Clique em "Entrar no bolão"</strong> e depois em "Já paguei"
+        </li>
+        <li>
+          <strong>Envie o comprovante</strong> para: <span id="tutorialContactNumber" class="highlight-number">Carregando...</span>
+        </li>
+        <li>
+          <strong>Aguarde a confirmação</strong> do organizador
+        </li>
+      </ol>
+    </div>
 
-    <label>
-      Quantidade de cotas:
+    <div class="quota-selector-box">
+      <label for="quotaQuantity">
+        <strong>Quantidade de cotas:</strong>
+      </label>
       <input
         type="number"
         id="quotaQuantity"
@@ -38,18 +59,28 @@
         max="10"
         value="1"
       />
-    </label>
-
-    <p>
-      <strong>Total:</strong>
-      R$ <span id="totalAmount">10,00</span>
-    </p>
+      <div class="total-display">
+        <span>Total a pagar:</span>
+        <strong>R$ <span id="totalAmount">10,00</span></strong>
+      </div>
+    </div>
 
     <div class="pix-payment-box">
+      <div class="pix-recipient-info">
+        <p>
+          <strong>Favorecido</strong>
+          <span id="pixRecipientName" class="pix-recipient-value">Carregando...</span>
+        </p>
+        <p style="margin-bottom: 0;">
+          <strong>Banco</strong>
+          <span id="pixRecipientBank" class="pix-recipient-value">Carregando...</span>
+        </p>
+      </div>
+
       <p><strong>Chave PIX:</strong></p>
 
       <code id="pixKeyValue" class="pix-key-display">
-        b853b083-72c3-444b-9224-7cb0d6e7a724
+        <!-- Carregado via config.js -->
       </code>
 
       <button
@@ -62,6 +93,9 @@
 
       <p class="pix-hint">
         Copie a chave PIX e pague pelo app do seu banco
+      </p>
+      <p class="pix-hint">
+        📱 Envie o comprovante para: <strong><span id="contactNumber">Carregando...</span></strong>
       </p>
     </div>
 
