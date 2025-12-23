@@ -14,15 +14,17 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL UNIQUE,
+  pix_key TEXT NOT NULL UNIQUE,
   is_admin BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Create index for fast name lookups
 CREATE INDEX idx_users_name ON users(name);
+CREATE INDEX idx_users_pix_key ON users(pix_key);
 
 -- Insert initial admin user
-INSERT INTO users (name, is_admin) VALUES ('Carlos', TRUE);
+INSERT INTO users (name, pix_key, is_admin) VALUES ('Carlos', 'admin@pix', TRUE);
 
 -- 2. BOLAO TABLE - Bolão instance management
 CREATE TABLE bolao (
@@ -49,6 +51,7 @@ CREATE TABLE participations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   bolao_id UUID REFERENCES bolao(id) ON DELETE CASCADE,
   user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  quota_quantity INTEGER NOT NULL DEFAULT 1 CHECK (quota_quantity >= 1 AND quota_quantity <= 10),
   payment_status TEXT NOT NULL DEFAULT 'pending',
   payment_claimed_at TIMESTAMP WITH TIME ZONE,
   payment_confirmed_at TIMESTAMP WITH TIME ZONE,
