@@ -9,6 +9,52 @@ let paymentStatus = null;
 let refreshInterval = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Carregar chave PIX do config
+  if (window.APP_CONFIG?.PIX_KEY) {
+    const pixKeyEl = document.getElementById('pixKeyValue');
+    if (pixKeyEl) {
+      pixKeyEl.textContent = window.APP_CONFIG.PIX_KEY;
+    }
+  }
+
+  // Carregar nome do favorecido do config
+  if (window.APP_CONFIG?.PIX_RECIPIENT_NAME) {
+    const recipientNameEl = document.getElementById('pixRecipientName');
+    if (recipientNameEl) {
+      recipientNameEl.textContent = window.APP_CONFIG.PIX_RECIPIENT_NAME;
+    }
+  }
+
+  // Carregar banco do favorecido do config
+  if (window.APP_CONFIG?.PIX_RECIPIENT_BANK) {
+    const recipientBankEl = document.getElementById('pixRecipientBank');
+    if (recipientBankEl) {
+      recipientBankEl.textContent = window.APP_CONFIG.PIX_RECIPIENT_BANK;
+    }
+  }
+
+  // Carregar número de contato do config
+  if (window.APP_CONFIG?.CONTACT_NUMBER) {
+    const contactNumberEl = document.getElementById('contactNumber');
+    if (contactNumberEl) {
+      contactNumberEl.textContent = window.APP_CONFIG.CONTACT_NUMBER;
+    }
+
+    // Também carregar no tutorial
+    const tutorialContactEl = document.getElementById('tutorialContactNumber');
+    if (tutorialContactEl) {
+      tutorialContactEl.textContent = window.APP_CONFIG.CONTACT_NUMBER;
+    }
+  }
+
+  // Carregar valor da cota do config (placeholder inicial)
+  if (window.APP_CONFIG?.QUOTA_VALUE) {
+    const quotaEl = document.getElementById('quotaUnitValue');
+    if (quotaEl) {
+      quotaEl.textContent = `R$ ${window.APP_CONFIG.QUOTA_VALUE.toFixed(2).replace('.', ',')}`;
+    }
+  }
+
   await init();
 
   document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
@@ -139,8 +185,20 @@ function toggleSelectionPermissions(canSelect) {
       notice = document.createElement('div');
       notice.id = noticeId;
       notice.className = 'warning-box';
-      notice.textContent =
-        '👁️ Você pode visualizar tudo, mas só pode escolher números após o pagamento ser confirmado.';
+
+      const content = document.createElement('div');
+      content.className = 'warning-box-content';
+
+      const strong = document.createElement('strong');
+      strong.textContent = 'Visualização Permitida';
+
+      const p = document.createElement('p');
+      p.textContent = 'Você pode visualizar tudo, mas só pode escolher números após o pagamento ser confirmado.';
+
+      content.appendChild(strong);
+      content.appendChild(p);
+      notice.appendChild(content);
+
       section.prepend(notice);
     }
   } else {
@@ -379,7 +437,7 @@ async function refreshData() {
 
 function updateTotalAmount() {
   const qty = parseInt(document.getElementById('quotaQuantity').value) || 1;
-  const unit = 10;
+  const unit = window.APP_CONFIG?.QUOTA_VALUE || 10;
   document.getElementById('totalAmount').textContent =
     (qty * unit).toFixed(2).replace('.', ',');
 }
